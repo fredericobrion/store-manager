@@ -14,9 +14,23 @@ const allProductsFromModel = [
 const ProductByIdFromDb = { id: 1, name: 'Celular' };
 const ProductByIdFromModel = { id: 1, name: 'Celular' };
 
+const productIdFromDb = { insertId: 6 };
+const productIdFromModel = 6;
+
+const newProductFromService = { id: 6, name: 'Microondas' };
+
+const createdDriver = {
+  status: 'CREATED',
+  data: newProductFromService,
+};
+
 module.exports = {
   allProductsFromDb,
   allProductsFromModel,
   ProductByIdFromDb,
   ProductByIdFromModel,
+  productIdFromDb,
+  productIdFromModel,
+  newProductFromService,
+  createdDriver,
 };

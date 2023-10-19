@@ -8,7 +8,7 @@ chai.use(sinonChai);
 const { productController } = require('../../../src/controllers');
 const { productService } = require('../../../src/services');
 const { NOT_FOUND, SUCCESSFUL } = require('../../../src/utils/status');
-const { allProductsFromModel } = require('../mocks/product.mock');
+const { allProductsFromModel, createdDriver } = require('../mocks/product.mock');
 
 describe('Realizando testes - PRODUCT CONTROLLER:', function () {
   it('Buscando todos os produtos com sucesso', async function () {
@@ -56,6 +56,20 @@ describe('Realizando testes - PRODUCT CONTROLLER:', function () {
 
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith(serviceResponse.data);
+  });
+
+  it('Inserindo produto com sucesso', async function () {
+    sinon.stub(productService, 'insert').resolves(createdDriver);
+
+    const req = { params: {}, body: { name: 'Microondas' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productController.insert(req, res);
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith(createdDriver.data);
   });
 
   afterEach(function () {
