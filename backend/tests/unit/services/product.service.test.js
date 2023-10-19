@@ -4,6 +4,8 @@ const { allProductsFromModel, productIdFromModel } = require('../mocks/product.m
 const { productModel } = require('../../../src/models');
 const { productService } = require('../../../src/services');
 const { SUCCESSFUL, NOT_FOUND, CREATED } = require('../../../src/utils/status');
+const { validateName } = require('../../../src/middlewares/product.middlewares');
+const { createProductSchema } = require('../../../src/services/validations/productSchema');
 
 describe('Realizando testes - PRODUCT SERVICE:', function () {
   it('Buscando todos os produtos com sucesso', async function () {
@@ -49,6 +51,49 @@ describe('Realizando testes - PRODUCT SERVICE:', function () {
     expect(responseService.status).to.be.equal(CREATED);
     expect(responseService.data).to.be.an('object');
     expect(responseService.data).to.be.deep.equal({ id: 6, name: 'Microondas' });
+  });
+
+  it('Testa se o middleware de validação de nome aponta erro quando o campo nome não é enviado', async function () {
+    const req = { body: { nam: 'Celular' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    sinon.stub(createProductSchema, 'validate').returns({ error: { message: 'name is required' } });
+
+    await validateName(req, res);
+
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith({ message: 'name is required' });
+  });
+
+  it('Testa se o middleware de validação de nome aponta erro quando o nome tem menos de 5 caracteres', async function () {
+    const req = { body: { nam: 'cel' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    sinon.stub(createProductSchema, 'validate').returns({ error: { message: 'name length must be at least 5 characters long' } });
+
+    await validateName(req, res);
+
+    expect(res.status).to.have.been.calledWith(422);
+    expect(res.json).to.have.been.calledWith({ message: 'name length must be at least 5 characters long' });
+  });
+
+  it('Testa se o middleware de validação de nome aceita nomes corretos', async function () {
+    const req = { body: { name: 'Celular' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    const next = sinon.stub().returns();
+
+    await validateName(req, res, next);
+
+    expect(next).to.have.been.calledWith();
   });
 
   afterEach(function () {
