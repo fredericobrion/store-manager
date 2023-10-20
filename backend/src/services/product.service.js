@@ -11,7 +11,6 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const product = await productModel.getById(id);
-  console.log(product);
 
   if (!product) return { status: NOT_FOUND, data: { message: 'Product not found' } };
 
@@ -29,8 +28,20 @@ const insert = async (name) => {
   return { status: CREATED, data: response };
 };
 
+const update = async (id, name) => {
+  await productModel.update(id, name);
+
+  const response = {
+    id: Number(id),
+    name,
+  };
+
+  return { status: SUCCESSFUL, data: response };
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
+  update,
 };

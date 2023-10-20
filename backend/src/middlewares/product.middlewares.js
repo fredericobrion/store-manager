@@ -1,4 +1,5 @@
 const { createProductSchema } = require('../services/validations/productSchema');
+const productModel = require('../models/product.model');
 
 const generateErrorResponse = (res, message) => {
   console.log(message);
@@ -20,6 +21,19 @@ const validateName = (req, res, next) => {
   next();
 };
 
+const validateProductId = async (req, res, next) => {
+  const { id } = req.params;
+
+  const product = await productModel.getById(id);
+
+  if (!product) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  next();
+};
+
 module.exports = {
   validateName,
+  validateProductId,
 };
