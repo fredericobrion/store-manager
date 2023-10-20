@@ -19,7 +19,7 @@ const productIdFromModel = 6;
 
 const newProductFromService = { id: 6, name: 'Microondas' };
 
-const createdDriver = {
+const createdProduct = {
   status: 'CREATED',
   data: newProductFromService,
 };
@@ -32,5 +32,5 @@ module.exports = {
   productIdFromDb,
   productIdFromModel,
   newProductFromService,
-  createdDriver,
+  createdProduct,
 };

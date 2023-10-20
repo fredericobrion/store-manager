@@ -6,6 +6,9 @@ const {
   allSalesFromModel,
   salesByIdFromDb,
   salesByIdFromModel,
+  saleIdFromDb,
+  saleIdFromModel,
+  saleToInsert,
 } = require('../mocks/sale.mock');
 const { saleModel } = require('../../../src/models');
 
@@ -28,6 +31,13 @@ describe('Realizando testes - SALE MODEL:', function () {
 
     expect(result).to.be.an('array');
     expect(result).to.be.deep.equal(salesByIdFromModel);
+  });
+
+  it('Adicionando venda com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves([saleIdFromDb]);
+
+    const result = await saleModel.insert(saleToInsert);
+    expect(result).to.be.equal(saleIdFromModel);
   });
 
   afterEach(function () {

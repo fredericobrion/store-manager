@@ -1,3 +1,5 @@
+// const snakeize = require('snakeize');
+
 const connection = require('./connection');
 
 const getAll = async () => {
@@ -27,7 +29,30 @@ const getById = async (id) => {
   return sale;
 };
 
+const insert = async (sale) => {
+  const [{ insertId }] = await connection.execute(
+    'INSERT INTO sales (date) VALUES (CURDATE())',
+  );
+  
+  const promises = sale.map(async (product) => {
+    await connection.execute(
+      'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
+      [insertId, product.productId, product.quantity],
+    );
+  });
+  await Promise.all(promises);
+
+  return insertId;
+};
+
 module.exports = {
   getAll,
   getById,
+  insert,
+};
+
+module.exports = {
+  getAll,
+  getById,
+  insert,
 };

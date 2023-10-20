@@ -1,8 +1,8 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { SUCCESSFUL, NOT_FOUND } = require('../../../src/utils/status');
+const { SUCCESSFUL, NOT_FOUND, CREATED } = require('../../../src/utils/status');
 const { saleModel } = require('../../../src/models');
-const { allSalesFromModel } = require('../mocks/sale.mock');
+const { allSalesFromModel, saleIdFromModel, saleToInsert } = require('../mocks/sale.mock');
 const { saleService } = require('../../../src/services');
 
 describe('Realizando testes - SALE SERVICE:', function () {
@@ -84,6 +84,16 @@ describe('Realizando testes - SALE SERVICE:', function () {
     const responseService = await saleService.getById(99);
     expect(responseService.status).to.be.equal(NOT_FOUND);
     expect(responseService.data.message).to.be.equal('Sale not found');
+  });
+
+  it('Inserindo venda com sucesso', async function () {
+    sinon.stub(saleModel, 'insert').resolves(saleIdFromModel);
+
+    const responseService = await saleService.insert(saleToInsert);
+
+    expect(responseService.status).to.be.equal(CREATED);
+    expect(responseService.data).to.be.an('object');
+    expect(responseService.data).to.be.deep.equal({ id: 6, itemsSold: saleToInsert });
   });
 
   afterEach(function () {

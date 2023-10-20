@@ -7,8 +7,8 @@ chai.use(sinonChai);
 
 const { saleController } = require('../../../src/controllers');
 const { saleService } = require('../../../src/services');
-const { NOT_FOUND, SUCCESSFUL } = require('../../../src/utils/status');
-const { allSalesFromDb, salesByIdFromDb } = require('../mocks/sale.mock');
+const { NOT_FOUND, SUCCESSFUL, CREATED } = require('../../../src/utils/status');
+const { allSalesFromDb, salesByIdFromDb, saleToInsert } = require('../mocks/sale.mock');
 
 describe('Realizando testes - SALE CONTROLLER:', function () {
   it('Buscando todas as vendas com sucesso', async function () {
@@ -54,6 +54,20 @@ describe('Realizando testes - SALE CONTROLLER:', function () {
 
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+  });
+
+  it('Adicionando venda com sucesso', async function () {
+    sinon.stub(saleService, 'insert').resolves({ status: CREATED, data: { id: 6, itemsSold: saleToInsert } });
+    
+    const req = { params: {}, body: saleToInsert };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+  
+    await saleController.insert(req, res);
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith({ id: 6, itemsSold: saleToInsert });
   });
   
   afterEach(function () {

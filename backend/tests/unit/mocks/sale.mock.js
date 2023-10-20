@@ -82,9 +82,19 @@ const salesByIdFromModel = [
   },
 ];
 
+const saleIdFromDb = { insertId: 6 };
+const saleIdFromModel = 6;
+const saleToInsert = [
+  { productId: 1, quantity: 2 },
+  { productId: 2, quantity: 2 },
+];
+
 module.exports = {
   allSalesFromDb,
   allSalesFromModel,
   salesByIdFromDb,
   salesByIdFromModel,
+  saleIdFromDb,
+  saleIdFromModel,
+  saleToInsert,
 };

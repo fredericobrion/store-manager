@@ -1,6 +1,6 @@
 const { saleModel } = require('../models');
 
-const { SUCCESSFUL, NOT_FOUND } = require('../utils/status');
+const { SUCCESSFUL, NOT_FOUND, CREATED } = require('../utils/status');
 
 const getAll = async () => {
   const sales = await saleModel.getAll();
@@ -16,7 +16,19 @@ const getById = async (id) => {
   return { status: SUCCESSFUL, data: sale };
 };
 
+const insert = async (sale) => {
+  const id = await saleModel.insert(sale);
+
+  const response = {
+    id,
+    itemsSold: [...sale],
+  };
+
+  return { status: CREATED, data: response };
+};
+
 module.exports = {
   getAll,
   getById,
+  insert,
 };
