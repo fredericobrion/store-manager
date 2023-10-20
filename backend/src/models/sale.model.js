@@ -50,9 +50,3 @@ module.exports = {
   getById,
   insert,
 };
-
-module.exports = {
-  getAll,
-  getById,
-  insert,
-};

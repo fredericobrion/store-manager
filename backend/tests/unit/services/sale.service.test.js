@@ -4,6 +4,8 @@ const { SUCCESSFUL, NOT_FOUND, CREATED } = require('../../../src/utils/status');
 const { saleModel } = require('../../../src/models');
 const { allSalesFromModel, saleIdFromModel, saleToInsert } = require('../mocks/sale.mock');
 const { saleService } = require('../../../src/services');
+const { validateSaleInput } = require('../../../src/middlewares/sale.middlewares');
+const { createSaleSchema } = require('../../../src/services/validations/saleSchema');
 
 describe('Realizando testes - SALE SERVICE:', function () {
   it('Buscando todas as vendas com sucesso', async function () {
@@ -94,6 +96,21 @@ describe('Realizando testes - SALE SERVICE:', function () {
     expect(responseService.status).to.be.equal(CREATED);
     expect(responseService.data).to.be.an('object');
     expect(responseService.data).to.be.deep.equal({ id: 6, itemsSold: saleToInsert });
+  });
+
+  it('Testa se o middleware de validação de entrada aponta erro quando o campo quantity não é enviado', async function () {
+    const req = { body: [{ productId: 1 }] };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    sinon.stub(createSaleSchema, 'validate').returns({ error: { message: 'quantity is required' } });
+
+    await validateSaleInput(req, res);
+
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith({ message: 'quantity is required' });
   });
 
   afterEach(function () {
