@@ -1,5 +1,5 @@
 const { createSaleSchema } = require('../services/validations/saleSchema');
-const { getById } = require('../models/product.model');
+const saleModel = require('../models/sale.model');
 
 const generateErrorResponse = (res, message) => {
   console.log(message);
@@ -25,7 +25,7 @@ const validateSaleInput = (req, res, next) => {
 const validateProductInDB = async (req, res, next) => {
   const ids = [];
   const promises = req.body.map(async (sale) => {
-    const saleId = await getById(sale.productId);
+    const saleId = await saleModel.getById(sale.productId);
     ids.push(saleId);
   });
 
@@ -40,7 +40,20 @@ const validateProductInDB = async (req, res, next) => {
   next();
 };
 
+const validateSaleId = async (req, res, next) => {
+  const { id } = req.params;
+
+  const sale = await saleModel.getById(id);
+
+  if (sale.length === 0) {
+    return res.status(404).json({ message: 'Sale not found' });
+  }
+
+  next();
+};
+
 module.exports = {
   validateSaleInput,
   validateProductInDB,
+  validateSaleId,
 };

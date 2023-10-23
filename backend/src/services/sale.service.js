@@ -1,6 +1,6 @@
 const { saleModel } = require('../models');
 
-const { SUCCESSFUL, NOT_FOUND, CREATED } = require('../utils/status');
+const { SUCCESSFUL, NOT_FOUND, CREATED, NO_CONTENT } = require('../utils/status');
 
 const getAll = async () => {
   const sales = await saleModel.getAll();
@@ -27,8 +27,15 @@ const insert = async (sale) => {
   return { status: CREATED, data: response };
 };
 
+const deleteSale = async (id) => {
+  await saleModel.deleteSale(id);
+
+  return { status: NO_CONTENT };
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
+  deleteSale,
 };
