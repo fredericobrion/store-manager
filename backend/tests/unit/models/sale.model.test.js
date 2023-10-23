@@ -34,10 +34,41 @@ describe('Realizando testes - SALE MODEL:', function () {
   });
 
   it('Adicionando venda com sucesso', async function () {
-    sinon.stub(connection, 'execute').resolves([saleIdFromDb]);
+    sinon.stub(connection, 'execute')
+      .onCall(0).resolves([saleIdFromDb])
+      .onCall(1)
+      .resolves();
 
     const result = await saleModel.insert(saleToInsert);
     expect(result).to.be.equal(saleIdFromModel);
+  });
+
+  it('Deletando venda com sucesso', async function () {
+    sinon.stub(connection, 'execute');
+
+    const inputData = 1;
+    await saleModel.deleteSale(inputData);
+
+    expect(connection.execute.calledOnce).to.be.equal(true);
+  });
+
+  it('Buscando pelo id e retornando id da venda junto', async function () {
+    sinon.stub(connection, 'execute').resolves([salesByIdFromDb]);
+
+    const inputData = 1;
+    const result = await saleModel.getByIdWithSaleId(inputData);
+
+    expect(result).to.be.an('array');
+    expect(result).to.be.deep.equal(salesByIdFromDb);
+  });
+
+  it('Atualizando venda com sucesso', async function () {
+    sinon.stub(connection, 'execute');
+
+    const inputData = [1, 1, 2];
+    await saleModel.updateSale(...inputData);
+
+    expect(connection.execute.calledOnce).to.be.equal(true);
   });
 
   afterEach(function () {

@@ -12,6 +12,7 @@ const getById = async (id) => {
     'SELECT * FROM products WHERE id=?',
     [id],
   );
+  console.log(product);
   return product;
 };
 
@@ -37,10 +38,20 @@ const deleteProduct = async (id) => {
   );
 };
 
+const getByName = async (name) => {
+  const [product] = await connection.execute(
+    `SELECT * FROM products
+    WHERE name LIKE '%?%'`,
+    [name],
+  );
+  return product;
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
   update,
   deleteProduct,
+  getByName,
 };

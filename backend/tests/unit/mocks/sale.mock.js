@@ -89,6 +89,28 @@ const saleToInsert = [
   { productId: 2, quantity: 2 },
 ];
 
+const rightProductsBody = [
+  {
+    productId: 1,
+    quantity: 2,
+  },
+  {
+    productId: 2,
+    quantity: 2,
+  },
+];
+
+const wrongQuantityProductsBody = [
+  {
+    productId: 1,
+    quantity: -2,
+  },
+  {
+    productId: 2,
+    quantity: 2,
+  },
+];
+
 module.exports = {
   allSalesFromDb,
   allSalesFromModel,
@@ -97,4 +119,6 @@ module.exports = {
   saleIdFromDb,
   saleIdFromModel,
   saleToInsert,
+  rightProductsBody,
+  wrongQuantityProductsBody,
 };

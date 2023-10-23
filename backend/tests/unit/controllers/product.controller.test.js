@@ -7,7 +7,7 @@ chai.use(sinonChai);
 
 const { productController } = require('../../../src/controllers');
 const { productService } = require('../../../src/services');
-const { NOT_FOUND, SUCCESSFUL } = require('../../../src/utils/status');
+const { NOT_FOUND, SUCCESSFUL, NO_CONTENT } = require('../../../src/utils/status');
 const { allProductsFromModel, createdProduct } = require('../mocks/product.mock');
 
 describe('Realizando testes - PRODUCT CONTROLLER:', function () {
@@ -70,6 +70,35 @@ describe('Realizando testes - PRODUCT CONTROLLER:', function () {
     await productController.insert(req, res);
     expect(res.status).to.have.been.calledWith(201);
     expect(res.json).to.have.been.calledWith(createdProduct.data);
+  });
+
+  it('Atualizando produto com sucesso', async function () {
+    sinon.stub(productService, 'update').resolves({ status: SUCCESSFUL, data: { id: 8, name: 'Geladeira' } });
+
+    const req = { params: { id: 8 }, body: { name: 'Geladeira' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productController.update(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith({ id: 8, name: 'Geladeira' });
+  });
+
+  it('Delete produto com sucesso', async function () {
+    sinon.stub(productService, 'deleteProduct').resolves({ status: NO_CONTENT });
+
+    const req = { params: { id: 8 }, body: {} };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productController.deleteProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(204);
+    expect(res.json).to.have.been.calledWith();
   });
 
   afterEach(function () {

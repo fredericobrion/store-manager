@@ -33,9 +33,19 @@ const deleteSale = async (id) => {
   return { status: NO_CONTENT };
 };
 
+const updateSale = async (saleId, productId, quantity) => {
+  await saleModel.updateSale(saleId, productId, quantity);
+
+  const updatedSale = await saleModel.getByIdWithSaleId(saleId);
+  const updatedProduct = updatedSale.find((product) => product.productId === Number(productId));
+
+  return { status: SUCCESSFUL, data: updatedProduct };
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
   deleteSale,
+  updateSale,
 };

@@ -58,6 +58,17 @@ describe('Realizando testes - PRODUCT MODEL:', function () {
     expect(connection.execute.calledOnce).to.be.equal(true);
   });
 
+  it('Buscando pelo nome', async function () {
+    sinon.stub(connection, 'execute').resolves([allProductsFromDb]);
+
+    const inputData = 'Celular';
+
+    const result = await productModel.getByName(inputData);
+
+    expect(result).to.be.an('array');
+    expect(result).to.be.deep.equal(allProductsFromModel);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

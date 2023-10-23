@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const { allProductsFromModel, productIdFromModel } = require('../mocks/product.mock');
 const { productModel } = require('../../../src/models');
 const { productService } = require('../../../src/services');
-const { SUCCESSFUL, NOT_FOUND, CREATED } = require('../../../src/utils/status');
+const { SUCCESSFUL, NOT_FOUND, CREATED, NO_CONTENT } = require('../../../src/utils/status');
 const { validateName } = require('../../../src/middlewares/product.middlewares');
 const { createProductSchema } = require('../../../src/services/validations/productSchema');
 
@@ -94,6 +94,25 @@ describe('Realizando testes - PRODUCT SERVICE:', function () {
     await validateName(req, res, next);
 
     expect(next).to.have.been.calledWith();
+  });
+
+  it('Atualizando produto com sucesso', async function () {
+    sinon.stub(productModel, 'update').resolves();
+
+    const inputData = { name: 'Microondas' };
+    const responseService = await productService.update(6, inputData.name);
+
+    expect(responseService.status).to.be.equal(SUCCESSFUL);
+    expect(responseService.data).to.be.an('object');
+    expect(responseService.data).to.be.deep.equal({ id: 6, name: 'Microondas' });
+  });
+
+  it('Deletando produto com sucesso', async function () {
+    sinon.stub(productModel, 'deleteProduct').resolves();
+
+    const responseService = await productService.deleteProduct(6);
+
+    expect(responseService.status).to.be.equal(NO_CONTENT);
   });
 
   afterEach(function () {
