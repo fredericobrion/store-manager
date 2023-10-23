@@ -1,7 +1,7 @@
 // const productModel = require('../models/product.model');
 const { productModel } = require('../models');
 
-const { SUCCESSFUL, NOT_FOUND, CREATED } = require('../utils/status');
+const { SUCCESSFUL, NOT_FOUND, CREATED, NO_CONTENT } = require('../utils/status');
 
 const getAll = async () => {
   const products = await productModel.getAll();
@@ -39,9 +39,16 @@ const update = async (id, name) => {
   return { status: SUCCESSFUL, data: response };
 };
 
+const deleteProduct = async (id) => {
+  await productModel.deleteProduct(id);
+
+  return { status: NO_CONTENT };
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
   update,
+  deleteProduct,
 };

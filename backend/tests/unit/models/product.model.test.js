@@ -40,6 +40,24 @@ describe('Realizando testes - PRODUCT MODEL:', function () {
     expect(result).to.be.equal(productIdFromModel);
   });
 
+  it('Atualizando produto com sucesso', async function () {
+    sinon.stub(connection, 'execute');
+
+    const inputData = { id: 1, name: 'Geladeira' };
+    await productModel.update(inputData.id, inputData.name);
+
+    expect(connection.execute.calledOnce).to.be.equal(true);
+  });
+
+  it('Deletando produto com sucesso', async function () {
+    sinon.stub(connection, 'execute');
+
+    const inputData = 1;
+    await productModel.deleteProduct(inputData);
+
+    expect(connection.execute.calledOnce).to.be.equal(true);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

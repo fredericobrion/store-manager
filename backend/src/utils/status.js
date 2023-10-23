@@ -2,10 +2,12 @@ const SUCCESSFUL = 'SUCCESSFUL';
 const NOT_FOUND = 'NOT_FOUND';
 const CREATED = 'CREATED';
 const BAD_REQUEST = 'BAD_REQUEST';
+const NO_CONTENT = 'NO_CONTENT';
 
 module.exports = {
   SUCCESSFUL,
   NOT_FOUND,
   CREATED,
   BAD_REQUEST,
+  NO_CONTENT,
 };
