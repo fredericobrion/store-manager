@@ -2,6 +2,7 @@ const route = require('express').Router();
 const { productController } = require('../controllers');
 const { validateName, validateProductId } = require('../middlewares/product.middlewares');
 
+route.get('/search', productController.getByName);
 route.get('/', productController.getAll);
 route.get('/:id', productController.getById);
 route.post('/', validateName, productController.insert);

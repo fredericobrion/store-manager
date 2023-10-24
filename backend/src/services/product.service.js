@@ -45,10 +45,17 @@ const deleteProduct = async (id) => {
   return { status: NO_CONTENT };
 };
 
+const getByName = async (name) => {
+  const products = name ? await productModel.getByName(name) : await productModel.getAll();
+
+  return { status: SUCCESSFUL, data: products };
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
   update,
   deleteProduct,
+  getByName,
 };
