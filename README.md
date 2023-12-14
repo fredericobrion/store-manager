@@ -19,3 +19,35 @@ git clone git@github.com:fredericobrion/store-manager.git && cd store-manager
 ```
 - Instale as dependências com o comando ```npm instal```.
 - Inicie os containers 'backend' e 'db' com ```docker-compose up -d```.
+
+## Funcionalidades
+1) Endpoint ```/products``` para os produtos:
+   - ```GET /products``` retorna todos os produtos.
+   - ```GET /products/:id``` retorna um produto.
+   - ```POST /products``` para cadastrar um produto. Espera receber no corpo da requisição um ```name``` válido.
+   - ```PUT /products/:id``` para atualizar um produto. Espera receber no corpo da requisição um ```name``` válido.
+   - ```DELETE /products/:id``` para deletar um produto.
+   - ```GET /products/search``` para pesquisar produtos pelo nome. O query params da requisição deverá seguir o formato abaixo:
+     
+    ```
+    http://localhost:PORT/products/search?q=Martelo
+    ```
+  
+2) Endpoint ```/sales``` para as vendas:
+  - ```GET /sales``` retorna todas as vendas.
+  - ```GET /sales/:id``` retorna uma venda.
+  - ```POST /sales``` para cadastrar uma venda. O corpo da requisição deverá seguir o formato abaixo:
+  ```
+  [
+    {
+      "productId": 1,
+      "quantity": 1
+    },
+    {
+      "productId": 2,
+      "quantity": 5
+    }
+  ]
+  ```
+  - ```DELETE /sales/:id``` para deletar uma venda.
+  - ```PUT /sales/:saleId/products/:productId/quantity``` para atualizar a quantidade de produtos em uma venda. Espera receber no corpo da requisição um ```quantity``` maior do que 0.
