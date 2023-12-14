@@ -11,3 +11,11 @@ O projeto Store Manager é uma API de sistema de gerenciamento de vendas.
 - <a href="https://www.chaijs.com/" target="_blank">Chai</a>
 - <a href="https://sinonjs.org/" target="_blank">Sinon</a>
 - <a href="https://nodemon.io/" target="_blank">Nodemon</a>
+
+## Como utilizar
+- Clone o repositório e entre no diretório
+```
+git clone git@github.com:fredericobrion/store-manager.git && cd store-manager
+```
+- Instale as dependências com o comando ```npm instal```.
+- Inicie os containers 'backend' e 'db' com ```docker-compose up -d```.
